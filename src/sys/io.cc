@@ -46,7 +46,7 @@ namespace SystemIO {
         }
         #elif __linux__
         {
-            return fmt::format("{}/.millennium", std::getenv("HOME"));
+            return millenniumDirectory;
         }
         #endif
     }

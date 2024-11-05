@@ -17,6 +17,10 @@
 #include <git/vcs.h>
 #include <api/executor.h>
 
+
+
+
+
 class Preload 
 {
 public:
@@ -118,6 +122,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
     return 1;
 }
 #elif __linux__
+#include "sys/locals.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <posix/helpers.h>
@@ -126,6 +131,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
 #include <chrono>
 #include <ctime>
 #include <stdexcept>
+
 
 extern "C"
 {
@@ -142,7 +148,10 @@ extern "C"
          * Since this isn't an executable, and is "preloaded", the kernel doesn't implicitly load dependencies, so we need to manually. 
          * libpython3.11.so.1.0 should already be in $PATH, so we can just load it from there.
         */
+
+        /* std::string pythonPath = fmt::format("{}/libpython-3.11.8.so", millenniumDirectory); */
         std::string pythonPath = fmt::format("{}/.millennium/libpython-3.11.8.so", std::getenv("HOME"));
+        std::cout << "pythonPath is " << pythonPath << '\n';
 
         if (!dlopen(pythonPath.c_str(), RTLD_LAZY | RTLD_GLOBAL)) 
         {

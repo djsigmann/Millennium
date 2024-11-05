@@ -17,12 +17,16 @@ steam_output() {
     done
 }
 
+
+export MILLENNIUM_DIRECTORY="$(unset CDPATH; cd -- "$(dirname -- "${0}")" && pwd)"
+! cd "${MILLENNIUM_DIRECTORY}" && printf 'Unable to change into directory: %s\n' "${MILLENNIUM_DIRECTORY}" && exit 1
+
 exec 3>&1 # Save a copy of file descriptor 1 (stdout) so we can restore it later
 exec 1> >(filter_output) # Redirect stdout to filter_output
 
 export STEAM_RUNTIME_LOGGER=0 # On archlinux, this needed to stop stdout from being piped into /dev/null instead of the terminal
-export LD_PRELOAD="$HOME/.millennium/libMillennium.so${LD_PRELOAD:+:$LD_PRELOAD}" # preload Millennium into Steam
-export LD_LIBRARY_PATH="$HOME/.millennium/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export LD_PRELOAD="${MILLENNIUM_DIRECTORY}/libMillennium.so${LD_PRELOAD:+:$LD_PRELOAD}" # preload Millennium into Steam
+export LD_LIBRARY_PATH="${MILLENNIUM_DIRECTORY}/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
 # Millennium hooks __libc_start_main to initialize itself, which is a function that is called before main. 
 # Besides that, Millennium does not alter Steam memory and runs completely disjoint.

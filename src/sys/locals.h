@@ -6,6 +6,8 @@
 #include <nlohmann/json.hpp>
 #include <mini/ini.h>
 
+const static inline std::string millenniumDirectory = std::getenv("MILLENNIUM_DIR");
+
 class SettingsStore
 {
 public:
